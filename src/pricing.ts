@@ -18,8 +18,13 @@ export type PriceChooser = (dependencies: PricingDependencies) => number;
 
 // Strategy Factories
 
+/**
+ * Choose the lowest possible price
+ * @param possiblePrices
+ */
 const Minima: PricingStrategyFactory = (possiblePrices) => (props) => {
-  const prices = [props.item.amountToCharge, ...possiblePrices.map((strategy) => strategy(props))];
+  const defaultPrice = props.item.product.price * props.item.quantity;
+  const prices = [defaultPrice, ...possiblePrices.map((strategy) => strategy(props))];
   return Math.min(...removeInvalidPrices(prices));
 };
 
